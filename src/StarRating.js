@@ -10,17 +10,27 @@ const containerStarStyle = {
   display: "flex",
 };
 
-const textStyle = {
-  lineHeight: "0",
-  margin: 0,
-};
-
-export default function StarRating({ maxRating = 5 }) {
-  const [star, setStar] = useState(0);
+export default function StarRating({
+  maxRating = 5,
+  color = "#fcc419",
+  size = 48,
+  messages = [],
+  defaultRating = 0,
+  onSetRating,
+}) {
+  const [star, setStar] = useState(defaultRating);
   const [tempRating, setTempRating] = useState(0);
   function handleRate(rate) {
     setStar(rate);
+    onSetRating(rate);
   }
+
+  const textStyle = {
+    lineHeight: "0",
+    margin: 0,
+    color,
+    fontSize: `${size / 1.5}px`,
+  };
   return (
     <div style={containerStyle}>
       <div style={containerStarStyle}>
@@ -30,23 +40,28 @@ export default function StarRating({ maxRating = 5 }) {
             onRate={() => handleRate(i + 1)}
             full={tempRating ? tempRating >= i + 1 : star >= i + 1}
             onHoverIn={() => setTempRating(i + 1)}
-            onHoverOut={() => setTempRating(i + 1)}
+            onHoverOut={() => setTempRating(0)}
+            size={size}
+            color={color}
           />
         ))}
       </div>
-      <p style={textStyle}>{tempRating || star || ""}</p>
+      <p style={textStyle}>
+        {messages.length === maxRating
+          ? messages[tempRating ? tempRating - 1 : star - 1]
+          : tempRating || star || ""}
+      </p>
     </div>
   );
 }
 
-const starStyle = {
-  width: 48,
-  height: 48,
-  display: "block",
-  cursor: "pointer",
-};
-
-function Star({ onRate, full, onHoverIn, onHoverOUt }) {
+function Star({ onRate, full, onHoverIn, onHoverOUt, color, size }) {
+  const starStyle = {
+    width: `${size}px`,
+    height: `${size}px`,
+    display: "block",
+    cursor: "pointer",
+  };
   return (
     <span
       style={starStyle}
@@ -59,8 +74,8 @@ function Star({ onRate, full, onHoverIn, onHoverOUt }) {
         <svg
           xmlns="http://www.w3.org/2000/svg"
           viewBox="0 0 20 20"
-          fill="#000"
-          stroke="#000"
+          fill={color}
+          stroke={color}
         >
           <path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z" />
         </svg>
@@ -69,7 +84,7 @@ function Star({ onRate, full, onHoverIn, onHoverOUt }) {
           xmlns="http://www.w3.org/2000/svg"
           fill="none"
           viewBox="0 0 24 24"
-          stroke="#000"
+          stroke={color}
         >
           <path
             strokeLinecap="round"
@@ -82,22 +97,3 @@ function Star({ onRate, full, onHoverIn, onHoverOUt }) {
     </span>
   );
 }
-/*
-FULL STAR
-
-<svg
-  xmlns="http://www.w3.org/2000/svg"
-  viewBox="0 0 20 20"
-  fill="#000"
-  stroke="#000"
->
-  <path
-    d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z"
-  />
-</svg>
-
-
-EMPTY STAR
-
-
-*/
