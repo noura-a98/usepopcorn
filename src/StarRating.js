@@ -1,5 +1,5 @@
-import { use, useState } from "react";
-
+import { useState } from "react";
+import PropTypes from "prop-types";
 const containerStyle = {
   display: "flex",
   alignItems: "center",
@@ -16,13 +16,11 @@ export default function StarRating({
   size = 48,
   messages = [],
   defaultRating = 0,
-  onSetRating,
 }) {
   const [star, setStar] = useState(defaultRating);
   const [tempRating, setTempRating] = useState(0);
   function handleRate(rate) {
     setStar(rate);
-    onSetRating(rate);
   }
 
   const textStyle = {
