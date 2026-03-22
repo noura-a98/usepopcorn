@@ -16,11 +16,14 @@ export default function StarRating({
   size = 48,
   messages = [],
   defaultRating = 0,
+  onSetRating,
 }) {
   const [star, setStar] = useState(defaultRating);
   const [tempRating, setTempRating] = useState(0);
+
   function handleRate(rate) {
     setStar(rate);
+    if (onSetRating) onSetRating(rate);
   }
 
   const textStyle = {

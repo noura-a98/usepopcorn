@@ -10,7 +10,7 @@ import App from "./App";
 //     <div>
 //       <StarRating maxRating={5} color="blue" onSetRating={setMovieRating} />
 //       <p>This movie was rated {movieRating} stars</p>
-//     </div>
+//     </dipv>
 //   );
 // }
 
